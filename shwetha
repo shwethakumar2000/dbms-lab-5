@@ -1,0 +1,206 @@
+Setting environment for using XAMPP for Windows.
+user@LAPTOP-4FDFP408 f:\new folder (2)
+# mysql -uroot
+Welcome to the MariaDB monitor.  Commands end with ; or \g.
+Your MariaDB connection id is 8
+Server version: 10.3.16-MariaDB mariadb.org binary distribution
+
+Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+MariaDB [(none)]> show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| mysql              |
+| nandini            |
+| performance_schema |
+| phpmyadmin         |
+| shwetha            |
+| test               |
++--------------------+
+7 rows in set (0.113 sec)
+
+MariaDB [(none)]> create database 4mh17cs090;
+Query OK, 1 row affected (0.066 sec)
+
+MariaDB [(none)]> show databases;
++--------------------+
+| Database           |
++--------------------+
+| 4mh17cs090         |
+| information_schema |
+| mysql              |
+| nandini            |
+| performance_schema |
+| phpmyadmin         |
+| shwetha            |
+| test               |
++--------------------+
+8 rows in set (0.001 sec)
+
+MariaDB [(none)]> use 4mh17cs090;
+Database changed
+MariaDB [4mh17cs090]> create table employee(ssn int primary key,name varchar(20),addr varchar(30),sex char(1),sal int,
+    -> superssn int,dno int);
+Query OK, 0 rows affected (0.426 sec)
+
+MariaDB [4mh17cs090]> desc employee;
++----------+-------------+------+-----+---------+-------+
+| Field    | Type        | Null | Key | Default | Extra |
++----------+-------------+------+-----+---------+-------+
+| ssn      | int(11)     | NO   | PRI | NULL    |       |
+| name     | varchar(20) | YES  |     | NULL    |       |
+| addr     | varchar(30) | YES  |     | NULL    |       |
+| sex      | char(1)     | YES  |     | NULL    |       |
+| sal      | int(11)     | YES  |     | NULL    |       |
+| superssn | int(11)     | YES  |     | NULL    |       |
+| dno      | int(11)     | YES  |     | NULL    |       |
++----------+-------------+------+-----+---------+-------+
+7 rows in set (0.121 sec)
+MariaDB [4mh17cs090]> create table dept(dno int primary key,dname varchar(20),
+    -> mgrssn int,
+    -> mgrstartdate date,
+    -> foreign key(mgrssn) references employee(ssn));
+Query OK, 0 rows affected (0.294 sec)
+
+MariaDB [4mh17cs090]> desc dept;
++--------------+-------------+------+-----+---------+-------+
+| Field        | Type        | Null | Key | Default | Extra |
++--------------+-------------+------+-----+---------+-------+
+| dno          | int(11)     | NO   | PRI | NULL    |       |
+| dname        | varchar(20) | YES  |     | NULL    |       |
+| mgrssn       | int(11)     | YES  | MUL | NULL    |       |
+| mgrstartdate | date        | YES  |     | NULL    |       |
++--------------+-------------+------+-----+---------+-------+
+4 rows in set (0.046 sec)
+MariaDB [4mh17cs090]> alter table employee add foreign key(superssn) references employee(ssn);
+Query OK, 0 rows affected (1.001 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+MariaDB [4mh17cs090]> desc employee;
++----------+-------------+------+-----+---------+-------+
+| Field    | Type        | Null | Key | Default | Extra |
++----------+-------------+------+-----+---------+-------+
+| ssn      | int(11)     | NO   | PRI | NULL    |       |
+| name     | varchar(20) | YES  |     | NULL    |       |
+| addr     | varchar(30) | YES  |     | NULL    |       |
+| sex      | char(1)     | YES  |     | NULL    |       |
+| sal      | int(11)     | YES  |     | NULL    |       |
+| superssn | int(11)     | YES  | MUL | NULL    |       |
+| dno      | int(11)     | YES  |     | NULL    |       |
++----------+-------------+------+-----+---------+-------+
+7 rows in set (0.061 sec)
+
+MariaDB [4mh17cs090]> alter table employee add foreign key(dno) references dept(dno);
+Query OK, 0 rows affected (0.721 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+MariaDB [4mh17cs090]> desc employee;
++----------+-------------+------+-----+---------+-------+
+| Field    | Type        | Null | Key | Default | Extra |
++----------+-------------+------+-----+---------+-------+
+| ssn      | int(11)     | NO   | PRI | NULL    |       |
+| name     | varchar(20) | YES  |     | NULL    |       |
+| addr     | varchar(30) | YES  |     | NULL    |       |
+| sex      | char(1)     | YES  |     | NULL    |       |
+| sal      | int(11)     | YES  |     | NULL    |       |
+| superssn | int(11)     | YES  | MUL | NULL    |       |
+| dno      | int(11)     | YES  | MUL | NULL    |       |
++----------+-------------+------+-----+---------+-------+
+7 rows in set (0.034 sec)
+MariaDB [4mh17cs090]> create table dlocation(dno int,
+    -> dloc varchar(20),primary key(dno,dloc),
+    -> foreign key(dno) references dept(dno));
+Query OK, 0 rows affected (0.253 sec)
+MariaDB [4mh17cs090]> desc dlocation;
++-------+-------------+------+-----+---------+-------+
+| Field | Type        | Null | Key | Default | Extra |
++-------+-------------+------+-----+---------+-------+
+| dno   | int(11)     | NO   | PRI | NULL    |       |
+| dloc  | varchar(20) | NO   | PRI | NULL    |       |
++-------+-------------+------+-----+---------+-------+
+2 rows in set (0.007 sec)
+ariaDB [4mh17cs090]> desc project;
++-----------+-------------+------+-----+---------+-------+
+| Field     | Type        | Null | Key | Default | Extra |
++-----------+-------------+------+-----+---------+-------+
+| pno       | int(11)     | NO   | PRI | NULL    |       |
+| pname     | varchar(20) | YES  |     | NULL    |       |
+| plocation | varchar(20) | YES  |     | NULL    |       |
+| dno       | int(11)     | YES  | MUL | NULL    |       |
++-----------+-------------+------+-----+---------+-------+
+4 rows in set (0.033 sec)
+
+MariaDB [4mh17cs090]> create table works_on(ssn int,pno int,hours int,
+    -> primary key(ssn,pno),
+    -> foreign key(ssn) references employee(ssn),
+    -> foreign key(pno) references project(pno));
+Query OK, 0 rows affected (0.351 sec)
+
+MariaDB [4mh17cs090]> desc works_on;
++-------+---------+------+-----+---------+-------+
+| Field | Type    | Null | Key | Default | Extra |
++-------+---------+------+-----+---------+-------+
+| ssn   | int(11) | NO   | PRI | NULL    |       |
+| pno   | int(11) | NO   | PRI | NULL    |       |
+| hours | int(11) | YES  |     | NULL    |       |
++-------+---------+------+-----+---------+-------+
+3 rows in set (0.007 sec)
+
+MariaDB [4mh17cs090]> desc employee;
++----------+-------------+------+-----+---------+-------+
+| Field    | Type        | Null | Key | Default | Extra |
++----------+-------------+------+-----+---------+-------+
+| ssn      | int(11)     | NO   | PRI | NULL    |       |
+| name     | varchar(20) | YES  |     | NULL    |       |
+| addr     | varchar(30) | YES  |     | NULL    |       |
+| sex      | char(1)     | YES  |     | NULL    |       |
+| sal      | int(11)     | YES  |     | NULL    |       |
+| superssn | int(11)     | YES  | MUL | NULL    |       |
+| dno      | int(11)     | YES  | MUL | NULL    |       |
++----------+-------------+------+-----+---------+-------+
+7 rows in set (0.005 sec)
+
+MariaDB [4mh17cs090]> desc dept;
++--------------+-------------+------+-----+---------+-------+
+| Field        | Type        | Null | Key | Default | Extra |
++--------------+-------------+------+-----+---------+-------+
+| dno          | int(11)     | NO   | PRI | NULL    |       |
+| dname        | varchar(20) | YES  |     | NULL    |       |
+| mgrssn       | int(11)     | YES  | MUL | NULL    |       |
+| mgrstartdate | date        | YES  |     | NULL    |       |
++--------------+-------------+------+-----+---------+-------+
+4 rows in set (0.004 sec)
+
+MariaDB [4mh17cs090]> desc dlocation;
++-------+-------------+------+-----+---------+-------+
+| Field | Type        | Null | Key | Default | Extra |
++-------+-------------+------+-----+---------+-------+
+| dno   | int(11)     | NO   | PRI | NULL    |       |
+| dloc  | varchar(20) | NO   | PRI | NULL    |       |
++-------+-------------+------+-----+---------+-------+
+2 rows in set (0.003 sec)
+
+MariaDB [4mh17cs090]> desc project;
++-----------+-------------+------+-----+---------+-------+
+| Field     | Type        | Null | Key | Default | Extra |
++-----------+-------------+------+-----+---------+-------+
+| pno       | int(11)     | NO   | PRI | NULL    |       |
+| pname     | varchar(20) | YES  |     | NULL    |       |
+| plocation | varchar(20) | YES  |     | NULL    |       |
+| dno       | int(11)     | YES  | MUL | NULL    |       |
++-----------+-------------+------+-----+---------+-------+
+4 rows in set (0.005 sec)
+
+MariaDB [4mh17cs090]> desc works_on;
++-------+---------+------+-----+---------+-------+
+| Field | Type    | Null | Key | Default | Extra |
++-------+---------+------+-----+---------+-------+
+| ssn   | int(11) | NO   | PRI | NULL    |       |
+| pno   | int(11) | NO   | PRI | NULL    |       |
+| hours | int(11) | YES  |     | NULL    |       |
++-------+---------+------+-----+---------+-------+
+3 rows in set (0.005 sec)
